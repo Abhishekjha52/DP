@@ -30,6 +30,7 @@ int minSteps(vector<ll>&knightPos, vector<ll>&targetPos, int n)
             }
         }
     }
+    return -1;
 
 }
 int main()
