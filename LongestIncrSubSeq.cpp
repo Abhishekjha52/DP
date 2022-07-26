@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-int solveRec(vector<int>&a, int n, int curr, int prev)
+int solveRec(vector<int>&a, int n, int curr, int prev)//TC:O(2^N)
 {
     //base case
     if(curr==n)return 0;
@@ -15,7 +15,7 @@ int solveRec(vector<int>&a, int n, int curr, int prev)
     
     return max(take, notTake);
 }
-int solveMemo(vector<int>&a, int n, int curr, int prev, vector<vector<int>>&dp)
+int solveMemo(vector<int>&a, int n, int curr, int prev, vector<vector<int>>&dp)//TC:O(N*N) SC:O(N*N)
 {
     //base case
     if(curr==n)return 0;
@@ -31,7 +31,7 @@ int solveMemo(vector<int>&a, int n, int curr, int prev, vector<vector<int>>&dp)
     
     return dp[curr][prev+1]= max(take, notTake);
 }
-int solveTab(vector<int>&a, int n)
+int solveTab(vector<int>&a, int n)//TC:O(N*N) SC:O(N*N)
 {
     vector<vector<int>>dp(n+1, vector<int>(n+1, 0));
     for(int curr=n-1;curr>=0;curr--)
@@ -49,7 +49,7 @@ int solveTab(vector<int>&a, int n)
     }
     return dp[0][0];
 }
-int solveOpt(vector<int>&a, int n)
+int solveOpt(vector<int>&a, int n)//TC:O(N*N) SC:O(N)
 {
     vector<int>currRow(n+1, 0);
     vector<int>nextRow(n+1, 0);
@@ -69,6 +69,31 @@ int solveOpt(vector<int>&a, int n)
     }
     return nextRow[0];
 }
+
+int solveMostOpt(vector<int>&a, int n)//TC:O(NlogN) SC:O(N)
+{
+    //using DP with Binary Search
+    //the approach is to use lower_bound to find the index of just increasing number in array
+    //and replacing it with lowest number
+    if(n==0)
+        return 0;
+        
+    vector<int>ans;
+    ans.push_back(a[0]);
+    
+    for(int i=1;i<n;i++)
+    {
+        if(a[i]>ans.back())
+            ans.push_back(a[i]);
+        else
+        {
+            int index=lower_bound(ans.begin(), ans.end(), a[i])-ans.begin();
+            ans[index]=a[i];
+        }
+    }
+    return ans.size();
+}
+
 int lengthOfLIS(vector<int>& nums) {
     int n=nums.size();
     //return solveRec(nums, n, 0, -1);
